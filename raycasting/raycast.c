@@ -6,11 +6,23 @@
 /*   By: ebansse <ebansse@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 13:28:31 by ebansse           #+#    #+#             */
-/*   Updated: 2025/09/11 15:50:56 by ebansse          ###   ########.fr       */
+/*   Updated: 2025/10/08 15:48:09 by ebansse          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+void	wall_hit(t_config *game, float ray_x, float ray_y)
+{
+	if (game->wall_o == NORTH || game->wall_o == SOUTH)
+		game->wall_hit = ray_x - floor(ray_x / BLOCK) * BLOCK;
+	else
+		game->wall_hit = ray_y - floor(ray_y / BLOCK) * BLOCK;
+	game->tex_x = (int)(game->wall_hit
+			* game->textures[game->wall_o].width / BLOCK);
+	if (game->wall_o == SOUTH || game->wall_o == WEST)
+		game->tex_x = game->textures[game->wall_o].width - game->tex_x - 1;
+}
 
 void	draw_wall(t_config *game, float ray_x, float ray_y, int i)
 {
@@ -24,10 +36,7 @@ void	draw_wall(t_config *game, float ray_x, float ray_y, int i)
 	height = (BLOCK / dist) * (WIN_W / 2);
 	start_y = (WIN_H - height) / 2;
 	end = start_y + height;
-	if (game->wall_o == NORTH || game->wall_o == SOUTH)
-		game->tex_x = (int)ray_x % game->textures[game->wall_o].width;
-	else
-		game->tex_x = (int)ray_y % game->textures[game->wall_o].width;
+	wall_hit(game, ray_x, ray_y);
 	while (start_y < end)
 	{
 		game->tex_y = ((start_y - (WIN_H - height) / 2)
