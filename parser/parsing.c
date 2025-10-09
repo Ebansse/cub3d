@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ebansse <ebansse@student.42perpignan.fr    +#+  +:+       +#+        */
+/*   By: ebansse <ebansse@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 15:30:16 by cguinot           #+#    #+#             */
-/*   Updated: 2025/09/29 15:30:42 by ebansse          ###   ########.fr       */
+/*   Updated: 2025/10/09 14:20:34 by ebansse          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ int	handle_map_line(t_config *config, char *line, int textcount)
 				config->map_started = 1;
 				add_map_line(config, line);
 				return (0);
+			}
+			else if (config->map_started == 2)
+			{
+				return (printf("Error\nstring invalid: %smap already exist\n",
+						line), 2);
 			}
 		}
 		else
